@@ -1,6 +1,8 @@
-<?php include_once 'inc/Session.php';
-include_once 'inc/DB.php';
-include_once 'inc/User.php';
+<?php
+spl_autoload_register(function ($class) {
+    include 'inc/'.$class.'.php';
+});
+
 Session::init();
 if (isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
     $usr=new User();
