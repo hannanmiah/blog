@@ -47,6 +47,9 @@ if (isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
             <a class="nav-link" href="profile.php">Profile</a>
           </li>
           <li class="nav-item">
+            <a class="btn btn-primary" href="create_post.php">Create Post</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="logout.php">Logout</a>
           </li>
             <?php } else {?>
