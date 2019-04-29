@@ -26,8 +26,18 @@ if (is_bool($data)) {
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <?php
-
-        $data=$post->readAll();
+        $page=1;
+        if (isset($_GET['page'])) {
+            $page=$_GET['page'];
+            $limit=$post->paginate($page, 5);
+            $page++;
+        } else {
+            $limit=$post->paginate($page, 5);
+            $page++;
+        }
+        
+        print_r($limit);
+        $data=$post->readAll($limit);
 
         foreach ($data as $posts) :
             ?>
@@ -49,7 +59,7 @@ if (is_bool($data)) {
         <?php endforeach; ?>
         <!-- Pager -->
         <div class="clearfix">
-          <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+          <a class="btn btn-primary float-right" href="<?php echo $_SERVER['PHP_SELF']."?page=".$page; ?>">Older Posts &rarr;</a>
         </div>
       </div>
     </div>

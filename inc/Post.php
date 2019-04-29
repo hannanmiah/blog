@@ -8,7 +8,7 @@ class Post
 
     private $db;
     
-    public function __construct($db)
+    public function __construct(DB $db)
     {
         $this->db = $db;
     }
@@ -30,14 +30,35 @@ class Post
         }
     }
 
-    public function readAll()
+    public function readAll($limit = ['lower'=>0,'upper'=>5])
     {
-        $sql="SELECT * FROM {$this->db->table};";
+        $sql="SELECT * FROM {$this->db->table} ORDER BY id DESC LIMIT {$limit['lower']},{$limit['upper']};";
         $stmt=$this->db->prepare($sql);
         $stmt->execute();
 
         $data=$stmt->fetchAll();
 
         return $data;
+    }
+
+    public function paginate($page, $lim)
+    {
+        $sql="SELECT * FROM {$this->db->table};";
+        $stmt=$this->db->prepare($sql);
+        $stmt->execute();
+
+        $res=$stmt->rowCount();
+
+        if ($res>0) {
+            $limit['lower']=($page*$lim)-$lim;
+            $limit['upper']=$page*$lim;
+
+            return $limit;
+        } else {
+            $limit['lower']=0;
+            $limit['upper']=0;
+
+            return $limit;
+        }
     }
 }
