@@ -61,4 +61,49 @@ class Post
             return $limit;
         }
     }
+
+    protected function countAll()
+    {
+        $sql="SELECT count(*) as total FROM {$this->db->table};";
+        $stmt=$this->db->prepare($sql);
+        $stmt->execute();
+        $res=$stmt->fetchAll();
+
+        foreach ($res as $value) {
+            $result=$value;
+        }
+
+        return $result;
+    }
+
+    protected function countLimit($limit)
+    {
+        $sql="SELECT * FROM {$this->db->table} ORDER BY id DESC LIMIT {$limit['lower']},{$limit['upper']};";
+        $stmt=$this->db->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    }
+
+    protected function countInvalid()
+    {
+        echo "<div class='alert alert-danger'>Invalid types or number of arguments passed!</div>";
+    }
+
+    public function __call($func, $args) {
+
+        switch ($func) {
+            case 'count':
+                switch (count($args)) {
+                    case 0:
+                        return call_user_func_array(array($this, 'countAll'), $args);
+                        break;
+                    case 1:
+                        return call_user_func_array(array($this, 'countLimit'), $args);
+                        break;
+                    default:
+                        return call_user_func_array(array($this, 'countInvalid'), $args);
+                 }
+        }
+    }
 }
