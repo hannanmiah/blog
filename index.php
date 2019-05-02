@@ -1,11 +1,13 @@
 <?php require 'lib/header.php';
-$db_info=new DB('blog', 'user_info');
-$data = $usr->fetch($db_info, 'id', Session::get('id'));
+if (Session::check() and isset($_SESSION['login'])) {
+    $db_info=new DB('blog', 'user_info');
+    $data = $usr->fetch($db_info, 'id', Session::get('id'));
+    if (is_bool($data)) {
+        header('Location: update_profile.php');
+    }
+}
 $post= new Post(new DB('blog', 'post'));
 $date=new Date(new DateTimeZone('Asia/Dhaka'));
-if (is_bool($data)) {
-    header('Location: update_profile.php');
-}
 ?>
 <!-- Page Header -->
 <header class="masthead" style="background-image: url('img/home-bg.jpg')">
@@ -38,7 +40,7 @@ if (is_bool($data)) {
       
         $data=$post->readAll($limit);
         $count=$post->count($limit);
-        if ($count>0) {
+        if ($count>0) :
             foreach ($data as $posts) :
                 ?>
       <div class="post-preview">
@@ -59,21 +61,20 @@ if (is_bool($data)) {
             $lim['upper']=$limit['upper']+1;
             $lim['lower']=$limit['lower'];
             $limDiff=$lim['upper']-$lim['lower'];
-
-            if ($post->count($lim) == $limDiff) {
+            if ($post->count($lim) == $limDiff) :
                 ?>
       <!-- Pager -->
       <div class="clearfix">
         <a class="btn btn-primary float-right" href="<?php echo $_SERVER['PHP_SELF']."?page=".$page; ?>">Older Posts &rarr;</a>
       </div>
                 <?php
-            }
-        } else {
+            endif;
+        else :
             ?>
       <div class="post-preview"><h3 class="post-subtitle">
         Nothing to display!
       </h3></div>
-        <?php } ?>
+        <?php endif; ?>
     </div>
   </div>
 </div>

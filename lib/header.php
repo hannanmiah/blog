@@ -2,11 +2,10 @@
 spl_autoload_register(function ($class) {
     include 'inc/'.$class.'.php';
 });
-
-Session::init();
+ $usr=new User();
+ $db=new DB('blog', 'user');
+ Session::init();
 if (isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
-    $usr=new User();
-    $db=new DB('blog', 'user');
     $user=['username'=>$_COOKIE['username'],'password'=>$_COOKIE['password']];
     $usr->autoLogin($db, $user);
 }
