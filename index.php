@@ -43,7 +43,7 @@ $date=new Date(new DateTimeZone('Asia/Dhaka'));
         if ($count>0) :
             foreach ($data as $posts) :
                 ?>
-      <div class="post-preview">
+      <div class="post-preview" id="post">
         <a href="post.html">
           <h2 class="post-title">
                 <?php echo $posts['title']; ?>
@@ -79,4 +79,19 @@ $date=new Date(new DateTimeZone('Asia/Dhaka'));
   </div>
 </div>
 <hr>
+
+<script>
+$( ".post-preview" ).hover(
+  function() {
+    $( this ).append( $( "<span class='d-flex justify-content-end'>Edit Delete</span>" ) );
+  }, function() {
+    $( this ).find( "span:last" ).remove();
+  }
+);
+ 
+$( "li.fade" ).hover(function() {
+  $( this ).fadeOut( 100 );
+  $( this ).fadeIn( 500 );
+});
+</script>
 <?php include 'lib/footer.php'; ?>
