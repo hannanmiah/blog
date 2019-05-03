@@ -6,9 +6,7 @@ if (!empty($_SESSION) && Session::check()) {
 
 Session::destroy();
 
-setcookie('username',null,time()-3600);
-setcookie('password',null,time()-3600);
+setcookie('username', null, time() - 3600);
+setcookie('password', null, time() - 3600);
 
 include 'lib/footer.php';
-
- ?>
