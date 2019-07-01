@@ -1,16 +1,15 @@
 <?php
-class Test
+$var = "Hannan Miah";
+
+function returnTest($var)
 {
-    public $test = ['name' => 'Hannan', 'age' => 22, 'class' => 'Engineering'];
-    public function __unset($name)
-    {
-        if (array_key_exists($name, $this->test)) {
-            unset($this->test[$name]);
-        }
+    echo "ha ha";
+    if (strlen($var) > 6) {
+        return "The var is smaller than 6 characters";
     }
+
+    return "The var is bigger than 6 characters";
 }
 
-$t = new Test();
-unset($t->age);
-unset($t->class);
-var_dump($t);
+
+returnTest($var);
