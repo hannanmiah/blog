@@ -1,15 +1,110 @@
 <?php
-$var = "Hannan Miah";
-
-function returnTest($var)
+class Session
 {
-    echo "ha ha";
-    if (strlen($var) > 6) {
-        return "The var is smaller than 6 characters";
+    const SESSION_STARTED = TRUE;
+    const SESSION_NOT_STARTED = FALSE;
+
+    // The state of the session
+    private $sessionState;
+
+    // THE only instance of the class
+    public static $instance;
+
+
+    public function __construct()
+    {
+        if (!isset($this->sessionState) and $this->sessionState == self::SESSION_NOT_STARTED) {
+            session_id(time());
+            $this->sessionState = session_start();
+        }
     }
 
-    return "The var is bigger than 6 characters";
+
+
+
+
+    /**
+     *    (Re)starts the session.
+     *    
+     *    @return    bool    TRUE if the session has been initialized, else FALSE.
+     **/
+
+    public function startSession()
+    {
+        if ($this->sessionState == self::SESSION_NOT_STARTED) {
+            $this->sessionState = session_start();
+        }
+
+        return $this->sessionState;
+    }
+
+
+    /**
+     *    Stores datas in the session.
+     *    Example: $instance->foo = 'bar';
+     *    
+     *    @param    name    Name of the datas.
+     *    @param    value    Your datas.
+     *    @return    void
+     **/
+
+    public function __set($name, $value)
+    {
+        $_SESSION[$name] = $value;
+    }
+
+
+    /**
+     *    Gets datas from the session.
+     *    Example: echo $instance->foo;
+     *    
+     *    @param    name    Name of the datas to get.
+     *    @return    mixed    Datas stored in session.
+     **/
+
+    public function __get($name)
+    {
+        if (isset($_SESSION[$name])) {
+            return $_SESSION[$name];
+        }
+    }
+
+
+    public function __isset($name)
+    {
+        return isset($_SESSION[$name]);
+    }
+
+
+    public function __unset($name)
+    {
+        unset($_SESSION[$name]);
+    }
+
+
+    /**
+     *    Destroys the current session.
+     *    
+     *    @return    bool    TRUE is session has been deleted, else FALSE.
+     **/
+
+    public function destroy()
+    {
+        if ($this->sessionState == self::SESSION_STARTED) {
+            $this->sessionState = !session_destroy();
+            unset($_SESSION);
+
+            return !$this->sessionState;
+        }
+
+        return FALSE;
+    }
 }
 
+$session = new Session();
+$session->user = "Hannan";
+$session->password = "adgjmp";
 
-returnTest($var);
+echo session_id();
+
+var_dump($_SESSION);

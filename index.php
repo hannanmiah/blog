@@ -44,12 +44,12 @@ $date = new Date(new DateTimeZone('Asia/Dhaka'));
         foreach ($data as $posts) :
           ?>
           <div class="post-preview" id="post">
-            <a href="post.html">
+            <a href="post.php?id=<?= $posts['id'] ?>">
               <h2 class="post-title">
                 <?php echo $posts['title']; ?>
               </h2>
               <h3 class="post-subtitle">
-                <?php echo $posts['content']; ?>
+                <?php echo substr($posts['content'], 0, 20); ?>
               </h3>
             </a>
             <p class="post-meta">Posted by
@@ -58,19 +58,19 @@ $date = new Date(new DateTimeZone('Asia/Dhaka'));
           </div>
           <hr>
         <?php endforeach;
-      $lim['upper'] = $limit['upper'] + 1;
-      $lim['lower'] = $limit['lower'];
-      $limDiff = $lim['upper'] - $lim['lower'];
-      if ($post->count($lim) == $limDiff) :
-        ?>
+        $lim['upper'] = $limit['upper'] + 1;
+        $lim['lower'] = $limit['lower'];
+        $limDiff = $lim['upper'] - $lim['lower'];
+        if ($post->count($lim) == $limDiff) :
+          ?>
           <!-- Pager -->
           <div class="clearfix">
             <a class="btn btn-primary float-right" href="<?php echo $_SERVER['PHP_SELF'] . "?page=" . $page; ?>">Older Posts &rarr;</a>
           </div>
         <?php
-      endif;
-    else :
-      ?>
+        endif;
+      else :
+        ?>
         <div class="post-preview">
           <h3 class="post-subtitle">
             Nothing to display!

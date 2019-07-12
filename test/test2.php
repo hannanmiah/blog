@@ -1,12 +1,5 @@
 <?php
-
-class Test2
-{
-    public function __unset($name)
-    {
-        echo "Variable $name unsetted successfully!";
-    }
-}
-
-$t2 = new Test2();
-unset($t2->$name);
+session_start();
+var_dump($_SESSION);
+session_unset();
+var_dump($_SESSION);
